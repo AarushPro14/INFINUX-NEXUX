@@ -1,0 +1,15 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { BadgeCheck, Building2 } from "lucide-react";
+import ProfileMenu from "@/components/profile-menu";
+import CancelJoinRequest from "@/components/cancel-join-request";
+
+export default function OwnerVerifyForm({ canCancelRole = true }: { canCancelRole?: boolean }){
+ const router=useRouter();const { data: session }=useSession();const[companyName,setCompany]=useState("Aarushi Infotech");const[companyId,setCompanyId]=useState("@aarushiinfotech");const[password,setPassword]=useState("");const[error,setError]=useState("");const[busy,setBusy]=useState(false);
+ async function submit(e:FormEvent){e.preventDefault();setBusy(true);setError("");try{const res=await fetch("/api/owner-verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({companyName,companyId,password})});const data=await res.json();if(!res.ok){setError(data.error??"Unable to verify this account.");return}router.push("/admin")}catch{setError("Connection issue. Please try again.")}finally{setBusy(false)}}
+ return <main className="app-shell"><div className="site-grid"/><header className="topbar"><Link className="wordmark" href="/">INFINUX <i>NEXUX</i></Link><ProfileMenu name={session?.user?.name} email={session?.user?.email}/></header><section className="page-container"><div className="page-kicker">OWNER VERIFICATION</div><h1 className="section-title">Verify your business</h1><p className="section-copy">Enter the NEXUX company ID and owner password configured for this workspace. Owner access is also limited to authorized email accounts.</p><div className="status-panel"><strong><BadgeCheck size={16} style={{verticalAlign:"-3px",marginRight:8,color:"#86dec3"}}/>Protected business setup</strong><br/>Your company password is checked on the server and is never sent back to the browser or included in the request email.</div>{error&&<div className="error-banner" role="alert">{error}</div>}<form className="auth-card form-stack" style={{maxWidth:530,marginTop:20}} onSubmit={submit}><label htmlFor="company"><Building2 size={14} style={{verticalAlign:"-2px",marginRight:6}}/>Registered business name</label><input id="company" required minLength={2} maxLength={120} value={companyName} onChange={e=>setCompany(e.target.value)} placeholder="Aarushi Infotech"/><label htmlFor="company-id">NEXUX company ID</label><input id="company-id" required maxLength={120} value={companyId} onChange={e=>setCompanyId(e.target.value)} placeholder="@aarushiinfotech" autoComplete="organization"/><label htmlFor="company-password">NEXUX owner password</label><input id="company-password" required type="password" maxLength={256} value={password} onChange={e=>setPassword(e.target.value)} placeholder="Enter the owner password" autoComplete="current-password"/><button className="primary-button" disabled={busy}>{busy?"Verifying…":"Verify & open administration"}</button></form>{canCancelRole&&<CancelJoinRequest isPending={false}/>}</section></main>
+}
