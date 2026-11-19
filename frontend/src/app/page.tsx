@@ -239,6 +239,22 @@ export default function HomePage() {
                   <span>About NEXUX</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
+
+                <a
+                  href="/privacy"
+                  className="group flex w-full max-w-xs items-center justify-between rounded-2xl border border-white/[0.08] bg-white/[0.025] px-5 py-4 text-sm text-white/55 transition hover:border-cyan-300/20 hover:bg-white/[0.05] hover:text-white"
+                >
+                  <span>Privacy Policy</span>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </a>
+
+                <a
+                  href="/terms"
+                  className="group flex w-full max-w-xs items-center justify-between rounded-2xl border border-white/[0.08] bg-white/[0.025] px-5 py-4 text-sm text-white/55 transition hover:border-cyan-300/20 hover:bg-white/[0.05] hover:text-white"
+                >
+                  <span>Terms of Service</span>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </a>
               </div>
             </div>
           </motion.section>
